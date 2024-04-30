@@ -12,7 +12,7 @@ partition from another operating system.
 ```bash
 # Retrieve the recovery keys from "snap recovery" and create "key.out" file
 # with this script.
-pipx run --spec git+https://github.com/lwbt/python-snap2luks snap2luks --string "$(
+pipx run --spec git+https://github.com/jps-help/python-snap2luks snap2luks --string "$(
   sudo snap recovery --show-keys | sed -e 's/recovery: \+//'
 )"
 
