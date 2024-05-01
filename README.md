@@ -18,11 +18,18 @@ pipx run --spec git+https://github.com/jps-help/python-snap2luks snap2luks --str
 
 # Add a new LUKS key to your Ubuntu partition.
 #
+# - The partition is labeled "ubuntu-data-enc". Use the commented out code with
+#   a static device name if automatic detection fails.
 # - Replace "nvme0n1p4" with "sda4" or an equivalent if you use a SATA drive
 #   instead of an NVME drive or if your drive ist not the primary drive.
 # - Replace the partition number "4" with an appropriate partition number if
 #   necessary.
-sudo cryptsetup luksAddKey --key-file "key.out" /dev/nvme0n1p4 
+# sudo cryptsetup luksAddKey --key-file "key.out" /dev/nvme0n1p4
+sudo cryptsetup luksAddKey --key-file "key.out" $(
+  lsblk --paths --raw --output "name,label" \
+  | grep "ubuntu-data-enc$" \
+  | cut -d' ' -f1
+)
 
 # Delete the key file.
 rm "key.out"
